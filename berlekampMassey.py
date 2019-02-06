@@ -24,18 +24,3 @@ def BerlekampMasseyAlgorithm(stream):
                 m = n
                 B = T
     return L, C
-
-
-def predictLFSR(stream, n):
-    L, C = BerlekampMasseyAlgorithm(stream)
-    N = len(stream)
-    state = stream[N-L:]
-    predictions = []
-    for i in range (n):
-        nextValue = 0
-        for j in range(L): 
-            nextValue ^= C[j] & state[j]
-        predictions.append(nextValue)
-        state.append(nextValue)
-        state = state[1:]
-    return predictions

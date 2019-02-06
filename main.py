@@ -16,16 +16,41 @@ def getNbBits():
     print(nbBits, "bits\n")
     return nbBits
 
-def getInputList(nbBits):
+def getStream(nbBits):
     str_input = input("Enter the list of integer observed (ex: 48 56 94 12):")
     print(str_input)
     str_integerList = str_input.split()
     stream = []
     for i in str_integerList:
         stream+= utils.intToBits(stringToInt(i), nbBits)
+    print("Stream : {}". format(stream))
     return stream
+
+def predictLFSR(stream, nbBits):
+    L, C = berlekampMassey.BerlekampMasseyAlgorithm(stream)
+    N = len(stream)
+    state = stream[N-L:]
+    predictions = []
+    end = False
+    print("Predictions (press q to stop, enter to continue)\n")
+
+    while(not end):
+        nextValue = 0
+        for j in range(L): 
+            nextValue ^= C[j] & state[j]
+        state.append(nextValue)
+        predictions.append(nextValue)
+        state = state[1:]
+
+        if len(predictions) == nbBits:
+            print("Prediction : {}".format(utils.bitToInt(predictions)))
+            predictions = []
+            key = input()
+            if key == "q" or key == "Q":
+                end = True
+
 
 if __name__ == "__main__":
     nbBits = getNbBits()
-    stream = getInputList(nbBits)
-    print("Stream : {}". format(stream))
+    stream = getStream(nbBits)
+    predictLFSR(stream, nbBits)
