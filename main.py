@@ -11,14 +11,14 @@ def stringToInt(str_input):
     return int_input
 
 def getNbBits():
-    str_nbBits = input("Enter the number of bits used to code each integer :")
+    print("First, the number of bits used to code each integer is required. Enter 1 for a bitstream")
+    str_nbBits = input("Number of bits : ")
     nbBits = stringToInt(str_nbBits)
-    print(nbBits, "bits\n")
     return nbBits
 
 def getStream(nbBits):
-    str_input = input("Enter the list of integer observed (ex: 48 56 94 12):")
-    print(str_input)
+    print("Then, enter the list integers produced by the LFSR (ex: 10 14 3 8)")
+    str_input = input("List of integers : ")
     str_integerList = str_input.split()
     stream = []
     for i in str_integerList:
@@ -34,7 +34,7 @@ def predictLFSR(stream, nbBits):
     state = stream[N-L:]
     predictions = []
     end = False
-    print("Predictions (press q to stop, enter to continue)\n")
+    print("Predictions (press q to stop, enter to continue)\nPrediction : ")
 
     while(not end):
         nextValue = 0
@@ -45,7 +45,7 @@ def predictLFSR(stream, nbBits):
         state = state[1:]
 
         if len(predictions) == nbBits:
-            print("Prediction : {}".format(utils.bitToInt(predictions)))
+            print(" >> {}  ".format(utils.bitToInt(predictions)), end ="", flush = True)
             predictions = []
             key = input()
             if key == "q" or key == "Q":
@@ -53,6 +53,7 @@ def predictLFSR(stream, nbBits):
 
 
 if __name__ == "__main__":
+    print("LFSR Predictor - Berlekamp-Massey Algorithm\n")
     nbBits = getNbBits()
     stream = getStream(nbBits)
     predictLFSR(stream, nbBits)
