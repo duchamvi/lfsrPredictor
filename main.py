@@ -27,7 +27,9 @@ def getStream(nbBits):
     return stream
 
 def predictLFSR(stream, nbBits):
-    L, C = berlekampMassey.BerlekampMasseyAlgorithm(stream)
+    L, Creversed = berlekampMassey.BerlekampMasseyAlgorithm(stream)
+    C = Creversed[::(-1)]
+    print("Linear Span : {}\nPolynom : {}".format(L, C))
     N = len(stream)
     state = stream[N-L:]
     predictions = []
