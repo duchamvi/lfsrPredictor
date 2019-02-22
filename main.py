@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import utils
 import berlekampMassey
+import colorama
 
 
 def getNbBits():
@@ -23,14 +24,14 @@ def getStream(nbBits):
     stream = []     
     for i in str_integerList:
         stream+= utils.intToBits(utils.stringToInt(i), nbBits)
-    print("Stream : {}". format(stream))
+    print(colorama.Fore.GREEN + "Stream = {}". format(stream) + colorama.Fore.WHITE)
     return stream
 
 def getPolynom(stream):
     print("Berlekamp-Massey Algorithm :")
     span, Preversed = berlekampMassey.BerlekampMasseyAlgorithm(stream)
     polynom = Preversed[::(-1)]   #reorder the polynom
-    print("\tLinear Span = {}\n\tPolynom = {}".format(span, polynom))
+    print(colorama.Fore.GREEN + "Linear Span = {}\nPolynom = {}".format(span, polynom) + colorama.Fore.WHITE)
     return span, polynom
 
 def predictLFSR(stream, nbBits, span, polynom):
@@ -40,7 +41,7 @@ def predictLFSR(stream, nbBits, span, polynom):
     state = stream[N-span:]    #reconstruction of the state of the LFSR
     predictions = []
     end = False
-    print("Predictions (press q to stop, enter to continue)\nPrediction : ")
+    print("Predictions (press q to stop, enter to continue)\nPrediction : "+ colorama.Fore.GREEN)
 
     # loop of value prediction
     while(not end):
@@ -62,11 +63,11 @@ def predictLFSR(stream, nbBits, span, polynom):
 
 
 if __name__ == "__main__":
-    print("LFSR Predictor - Berlekamp-Massey Algorithm\n")
+    print(colorama.Fore.GREEN + "\nLFSR Predictor\n" + colorama.Fore.WHITE)
     nbBits = getNbBits()
-    input("\nPress enter to continue\n")
+    input(colorama.Style.DIM + "\nPress enter to continue\n" + colorama.Style.NORMAL)
     stream = getStream(nbBits)
-    input("\nPress enter to continue\n")
+    input(colorama.Style.DIM + "\nPress enter to continue\n" + colorama.Style.NORMAL)
     span, polynom = getPolynom(stream)
-    input("\nPress enter to continue\n")
+    input(colorama.Style.DIM + "\nPress enter to continue\n" + colorama.Style.NORMAL)
     predictLFSR(stream, nbBits, span, polynom)
