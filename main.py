@@ -26,14 +26,18 @@ def getStream(nbBits):
     print("Stream : {}". format(stream))
     return stream
 
+def getPolynom(stream):
+    print("Berlekamp-Massey Algorithm :")
+    span, Preversed = berlekampMassey.BerlekampMasseyAlgorithm(stream)
+    polynom = Preversed[::(-1)]   #reorder the polynom
+    print("\tLinear Span = {}\n\tPolynom = {}".format(span, polynom))
+    return span, polynom
 
-def predictLFSR(stream, nbBits):
+def predictLFSR(stream, nbBits, span, polynom):
     """Predicts next inputs from a stream and nbBits"""
-    L, Creversed = berlekampMassey.BerlekampMasseyAlgorithm(stream)
-    C = Creversed[::(-1)]   #reorder the polynom
-    print("Linear Span : {}\nPolynom : {}".format(L, C))
+    
     N = len(stream)
-    state = stream[N-L:]    #reconstruction of the state of the LFSR
+    state = stream[N-span:]    #reconstruction of the state of the LFSR
     predictions = []
     end = False
     print("Predictions (press q to stop, enter to continue)\nPrediction : ")
@@ -42,15 +46,15 @@ def predictLFSR(stream, nbBits):
     while(not end):
         # find next bit 
         nextValue = 0
-        for j in range(L): 
-            nextValue ^= C[j] & state[j]
+        for j in range(span): 
+            nextValue ^= polynom[j] & state[j]
         state.append(nextValue)
         predictions.append(nextValue)
         state = state[1:]
 
         # if a full integer is constructed
         if len(predictions) == nbBits:
-            print(" >> {}  ".format(utils.bitToInt(predictions)), end ="", flush = True)
+            print("{} >> {}  ".format(predictions, utils.bitToInt(predictions)), end ="", flush = True)
             predictions = []
             key = input()
             if key == "q" or key == "Q":
@@ -60,5 +64,9 @@ def predictLFSR(stream, nbBits):
 if __name__ == "__main__":
     print("LFSR Predictor - Berlekamp-Massey Algorithm\n")
     nbBits = getNbBits()
+    input("\nPress enter to continue\n")
     stream = getStream(nbBits)
-    predictLFSR(stream, nbBits)
+    input("\nPress enter to continue\n")
+    span, polynom = getPolynom(stream)
+    input("\nPress enter to continue\n")
+    predictLFSR(stream, nbBits, span, polynom)
