@@ -38,7 +38,7 @@ def predictLFSR(stream, nbBits, span, polynom):
     """Predicts next inputs from a stream and nbBits"""
     
     N = len(stream)
-    state = stream[N-span:]    #reconstruction of the state of the LFSR
+    state = (stream[N-span:])[::-1]    #reconstruction of the state of the LFSR
     predictions = []
     end = False
     print("Predictions (press q to stop, enter to continue)\nPrediction : "+ colorama.Fore.GREEN)
@@ -49,9 +49,9 @@ def predictLFSR(stream, nbBits, span, polynom):
         nextValue = 0
         for j in range(span): 
             nextValue ^= polynom[j] & state[j]
-        state.append(nextValue)
+        state =  [nextValue] + state
         predictions.append(nextValue)
-        state = state[1:]
+        state = state[:-1]
 
         # if a full integer is constructed
         if len(predictions) == nbBits:
