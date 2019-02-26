@@ -28,18 +28,10 @@ def getStream(nbBits):
     return stream
 
 def printPolynom(polynom):
-    chaine =""
-    indice = len(polynom)
-    for i in polynom:
-        indice -=1
-        if i:
-            if chaine != "":
-                chaine += " + "
-
-            if indice == 0:
-                chaine+= "1"
-            else:
-                chaine+= "X^{}".format(indice)
+    chaine ="1"
+    for i in range(1, len(polynom)):
+        if polynom[i]:
+            chaine+= " + X^{}".format(i)
     print(colorama.Fore.GREEN + chaine + colorama.Fore.WHITE)
     print("Use this polynom to find the next output of the LFSR.")
 

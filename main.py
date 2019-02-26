@@ -29,8 +29,7 @@ def getStream(nbBits):
 
 def getPolynom(stream):
     print("Berlekamp-Massey Algorithm :")
-    span, Preversed = berlekampMassey.BerlekampMasseyAlgorithm(stream)
-    polynom = Preversed[::(-1)]   #reorder the polynom
+    span, polynom = berlekampMassey.BerlekampMasseyAlgorithm(stream)
     print(colorama.Fore.GREEN + "Linear Span = {}\nPolynom = {}".format(span, polynom) + colorama.Fore.WHITE)
     return span, polynom
 
@@ -48,7 +47,7 @@ def predictLFSR(stream, nbBits, span, polynom):
         # find next bit 
         nextValue = 0
         for j in range(span): 
-            nextValue ^= polynom[j] & state[j]
+            nextValue ^= polynom[j+1] & state[j]
         state =  [nextValue] + state
         predictions.append(nextValue)
         state = state[:-1]
