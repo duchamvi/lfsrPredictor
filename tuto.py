@@ -28,7 +28,7 @@ def getStream(nbBits):
     return stream
 
 def printPolynom(polynom):
-    chaine ="1"
+    chaine ="Polynom : 1"
     for i in range(1, len(polynom)):
         if polynom[i]:
             chaine+= " + X^{}".format(i)
@@ -50,6 +50,7 @@ def tuto():
     stream = getStream(nbBits)
     input(colorama.Style.DIM + "\nPress enter to continue\n" + colorama.Style.NORMAL)
     span, polynom = getPolynom(stream)
+    print(colorama.Fore.GREEN + "Size of internal state : {}".format(span)+ colorama.Fore.WHITE)
     printPolynom(polynom)
 
 tuto()
