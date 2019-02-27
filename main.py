@@ -27,11 +27,21 @@ def getStream(nbBits):
     print(colorama.Fore.GREEN + "Stream = {}". format(stream) + colorama.Fore.WHITE)
     return stream
 
+
 def getPolynom(stream):
     print("Berlekamp-Massey Algorithm :")
     span, polynom = berlekampMassey.BerlekampMasseyAlgorithm(stream)
-    print(colorama.Fore.GREEN + "Linear Span = {}\nPolynom = {}".format(span, polynom) + colorama.Fore.WHITE)
+    #print(colorama.Fore.GREEN + "Linear Span = {}\nPolynom = {}".format(span, polynom) + colorama.Fore.WHITE)
     return span, polynom
+
+
+def printPolynom(polynom):
+    chaine ="Polynom : 1"
+    for i in range(1, len(polynom)):
+        if polynom[i]:
+            chaine+= " + X^{}".format(i)
+    print(colorama.Fore.GREEN + chaine + colorama.Fore.WHITE)
+
 
 def predictLFSR(stream, nbBits, span, polynom):
     """Predicts next inputs from a stream and nbBits"""
@@ -68,5 +78,7 @@ if __name__ == "__main__":
     stream = getStream(nbBits)
     input(colorama.Style.DIM + "\nPress enter to continue\n" + colorama.Style.NORMAL)
     span, polynom = getPolynom(stream)
+    print(colorama.Fore.GREEN + "Size of internal state : {}".format(span)+ colorama.Fore.WHITE)
+    printPolynom(polynom)
     input(colorama.Style.DIM + "\nPress enter to continue\n" + colorama.Style.NORMAL)
     predictLFSR(stream, nbBits, span, polynom)
